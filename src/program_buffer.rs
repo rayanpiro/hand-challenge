@@ -13,10 +13,7 @@ use std::fs;
 
 impl Program {
     pub fn new(program: String) -> Self {
-        let program_parsed = program
-            .chars()
-            .map(|char| Instructions::parser(char))
-            .collect::<Vec<Instructions>>();
+        let program_parsed = Instructions::parser(program);
 
         let program_lenght = program_parsed.len();
 
@@ -47,10 +44,9 @@ impl Program {
                 Instructions::Backward => self.backward(),
                 Instructions::Increment => self.increment(),
                 Instructions::Decrement => self.decrement(),
-                Instructions::JEZero => self.jezero(),
-                Instructions::JNEZero => self.jnezero(),
+                Instructions::JEZero(jmp_from) => self.jezero(jmp_from),
+                Instructions::JNEZero(jmp_to) => self.jnezero(jmp_to),
                 Instructions::Print => self.print(),
-                _ => unimplemented!(),
             };
             self.next_instruction();
         }
@@ -102,32 +98,20 @@ impl Program {
         self.eip >= self.end_eip
     }
 
-    fn reached_jnezero(&self) -> bool {
-        self.program[self.eip] == Instructions::JNEZero
-    }
-
-    fn jezero(&mut self) {
+    fn jezero(&mut self, eip: usize) {
         if self.stack[self.stack_pointer] != 0 {
             return;
         }
 
-        while !self.end_of_program() && !self.reached_jnezero(){
-            self.eip += 1;
-        }
+        self.eip = eip;
     }
 
-    fn reached_jezero(&self) -> bool {
-        self.program[self.eip] == Instructions::JEZero
-    }
-
-    fn jnezero(&mut self) {
+    fn jnezero(&mut self, eip: usize) {
         if self.stack[self.stack_pointer] == 0 {
             return;
         }
 
-        while !self.eip >= 0 && !self.reached_jezero() {
-            self.eip -= 1;
-        }
+        self.eip = eip;
     }
 
     fn print(&self) {
