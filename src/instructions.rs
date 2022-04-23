@@ -27,12 +27,12 @@ impl Instructions {
         let mut loops = Loops::new();
 
         // First parse emojis to instructions
-        let mut parsed_program: Vec<Self> = program
+        let parsed_program: Vec<Self> = program
             .chars()
             .map(|instruction| Self::parse_char(instruction))
             .collect();
         
-        // Now filter by the loops and update jump addresses
+        // Now filter by the loops
         let loop_instructions = parsed_program.iter().enumerate().filter(|&(_, instruction)|{
             match instruction {
                 Instructions::JEZero(0) | Instructions::JNEZero(0) => true,
@@ -40,8 +40,10 @@ impl Instructions {
             }
         });
 
+        // Fast way to bypass Rust issues on borrowing
         let mut parsed_program = parsed_program.clone();
 
+        // Update the loops with the addresses to jump
         for (index, _) in loop_instructions {
             match parsed_program[index] {
                 Instructions::JEZero(0) => loops.init_loop(index),
@@ -59,6 +61,7 @@ impl Instructions {
     }
 }
 
+// Helper implementation to give semantics
 pub struct Loops {
     open: Vec<usize>,
 }
