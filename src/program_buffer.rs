@@ -15,13 +15,13 @@ impl Program {
     pub fn new(program: String) -> Self {
         let program_parsed = Instructions::parser(program);
 
-        let program_lenght = program_parsed.len();
+        let program_length = program_parsed.len();
 
         Self {
             program: program_parsed,
             stack: Vec::new(),
             eip: 0,
-            end_eip: program_lenght,
+            end_eip: program_length,
             esp: 0,
             stack_pointer: 0,
         }
