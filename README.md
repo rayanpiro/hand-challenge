@@ -1,3 +1,5 @@
+This is my solution coded in Rust of the challenge proposed [here](https://twitter.com/jseijasdev/status/1508366106888908801) by [jesus-seijas-sp](https://github.com/jesus-seijas-sp/hand-challenge)
+
 # Introduction
 
 You find a strange mirror that always shows a hand that is moving. 
