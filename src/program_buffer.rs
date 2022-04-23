@@ -99,19 +99,15 @@ impl Program {
     }
 
     fn jezero(&mut self, eip: usize) {
-        if self.stack[self.stack_pointer] != 0 {
-            return;
+        if self.stack[self.stack_pointer] == 0 {
+            self.eip = eip;
         }
-
-        self.eip = eip;
     }
 
     fn jnezero(&mut self, eip: usize) {
-        if self.stack[self.stack_pointer] == 0 {
-            return;
+        if self.stack[self.stack_pointer] != 0 {
+            self.eip = eip;
         }
-
-        self.eip = eip;
     }
 
     fn print(&self) {
