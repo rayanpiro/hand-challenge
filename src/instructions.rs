@@ -31,14 +31,15 @@ impl Instructions {
             .chars()
             .map(|instruction| Self::parse_char(instruction))
             .collect();
-        
+
         // Now filter by the loops
-        let loop_instructions = parsed_program.iter().enumerate().filter(|&(_, instruction)|{
-            match instruction {
+        let loop_instructions = parsed_program
+            .iter()
+            .enumerate()
+            .filter(|&(_, instruction)| match instruction {
                 Instructions::JEZero(0) | Instructions::JNEZero(0) => true,
                 _ => false,
-            }
-        });
+            });
 
         // Fast way to bypass Rust issues on borrowing
         let mut parsed_program = parsed_program.clone();

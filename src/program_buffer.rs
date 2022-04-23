@@ -80,7 +80,7 @@ impl Program {
 
     fn increment(&mut self) {
         if self.stack[self.stack_pointer] == u8::MAX {
-            self.stack[self.stack_pointer] = 0;
+            self.stack[self.stack_pointer] = u8::MIN;
         } else {
             self.stack[self.stack_pointer] += 1;
         }
@@ -88,7 +88,7 @@ impl Program {
 
     fn decrement(&mut self) {
         if self.stack[self.stack_pointer] == u8::MIN {
-            self.stack[self.stack_pointer] = 255;
+            self.stack[self.stack_pointer] = u8::MAX;
         } else {
             self.stack[self.stack_pointer] -= 1;
         }
@@ -111,7 +111,9 @@ impl Program {
     }
 
     fn print(&self) {
-        let to_print_char: char = self.stack[self.stack_pointer].try_into().expect("You cannot print a non-ASCII character");
+        let to_print_char: char = self.stack[self.stack_pointer]
+            .try_into()
+            .expect("You cannot print a non-ASCII character");
         print!("{}", to_print_char);
     }
 }
